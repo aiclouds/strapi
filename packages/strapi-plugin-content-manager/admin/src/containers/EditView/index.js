@@ -29,6 +29,7 @@ import init from './init';
 import reducer, { initialState } from './reducer';
 
 const EditView = ({
+  components,
   currentEnvironment,
   emitEvent,
   layouts,
@@ -95,12 +96,7 @@ const EditView = ({
     },
     [getField]
   );
-  const getFieldComponentIcon = useCallback(
-    fieldName => {
-      return get(getField(fieldName), ['component'], '');
-    },
-    [getField]
-  );
+
   // Check if a block is a dynamic zone
   const isDynamicZone = useCallback(
     block => {
@@ -139,6 +135,7 @@ const EditView = ({
   return (
     <EditViewProvider
       allLayoutData={allLayoutData}
+      components={components}
       layout={currentContentTypeLayoutData}
       isDraggingComponent={isDraggingComponent}
       setIsDraggingComponent={() => {
@@ -192,11 +189,6 @@ const EditView = ({
 
                             if (isComponent) {
                               const componentUid = getFieldComponentUid(name);
-
-                              const componentIcon = getFieldComponentIcon(name);
-                              console.log('icon', componentUid);
-                              console.log('icon', componentIcon);
-
                               const isRepeatable = get(
                                 getField(name),
                                 'repeatable',
@@ -319,6 +311,7 @@ EditView.defaultProps = {
 
 EditView.propTypes = {
   currentEnvironment: PropTypes.string,
+  components: PropTypes.array.isRequired,
   emitEvent: PropTypes.func,
   layouts: PropTypes.object.isRequired,
   slug: PropTypes.string.isRequired,
